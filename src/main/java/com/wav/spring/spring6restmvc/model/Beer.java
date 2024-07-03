@@ -1,4 +1,4 @@
-package model;
+package com.wav.spring.spring6restmvc.model;
 
 import lombok.Builder;
 import lombok.Data;
