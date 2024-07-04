@@ -4,7 +4,11 @@ import com.wav.spring.spring6restmvc.service.BeerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.wav.spring.spring6restmvc.model.Beer;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +23,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/beer")
-public class BeerController {
+public class BeerController
+{
     private final BeerService beerService;
+
+    @PostMapping
+//    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity handlePost(@RequestBody Beer beer)
+    {
+        Beer saved = beerService.saveNewBeer(beer);
+
+        return new ResponseEntity( HttpStatus.CREATED );
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Beer> listBeers(){
@@ -28,7 +42,8 @@ public class BeerController {
     }
 
     @RequestMapping(value = "{beerId}", method = RequestMethod.GET)
-    public Beer getBeerById(@PathVariable("beerId") UUID beerId){
+    public Beer getBeerById(@PathVariable("beerId") UUID beerId)
+    {
 
         log.debug("Get Beer by Id - in controller");
 
