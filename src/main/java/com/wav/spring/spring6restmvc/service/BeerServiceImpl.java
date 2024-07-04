@@ -90,4 +90,10 @@ public class BeerServiceImpl implements BeerService
 
         return savedBeer;
     }
+
+    @Override
+    public void updateById( UUID beerId, Beer beer )
+    {
+        beers.put( beerId, beer );
+    }
 }
