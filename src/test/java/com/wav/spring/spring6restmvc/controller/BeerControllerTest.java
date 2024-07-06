@@ -59,6 +59,13 @@ class BeerControllerTest
     @Test
     void testDeleteBeer() throws Exception
     {
+        /*
+        • Use Spring MockMVC and Mockito to test Delete endpoint for Customer
+        • Write test for Delete of Customer
+        • Verify HTTP 204 is returned
+        • Verify Mockito Mock delete method is called
+        • Verify the proper UUID is sent to the delete method using an Argument Captor
+        * */
         Beer beer = beerServiceImpl.listBeers().get( 0 );
 
         mockMvc.perform( delete( "/api/v1/beer/" + beer.getId() )
