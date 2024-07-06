@@ -12,10 +12,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BeerController.class )
@@ -34,11 +36,13 @@ class BeerControllerTest
     {
         Beer beer = beerServiceImpl.listBeers().get( 0 );
         //configura o mackito para retornar um objeto existente
-        given(beerService.getBeerById( any(UUID.class) )).willReturn( beer );
+        given(beerService.getBeerById( beer.getId() )).willReturn( beer );
 
-        mockMvc.perform( get("/api/v1/beer/" + UUID.randomUUID() )
+        mockMvc.perform( get("/api/v1/beer/" + beer.getId() )
                             .accept( MediaType.APPLICATION_JSON ) )
                 .andExpect( status().isOk() )
-                .andExpect( content().contentType(MediaType.APPLICATION_JSON) );
+                .andExpect( content().contentType(MediaType.APPLICATION_JSON) )
+                .andExpect( jsonPath( "$.id", is(beer.getId().toString()) ) )
+                .andExpect( jsonPath( "$.beerName", is(beer.getBeerName()) ) );
     }
 }
