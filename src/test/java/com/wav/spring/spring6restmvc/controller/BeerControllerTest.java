@@ -23,6 +23,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BeerController.class )
 class BeerControllerTest
 {
+    /*
+    Why use Spring MockMVC?
+
+    Spring MockMVC allows you to test the controller interactions in a servlet context
+    without the application running in a application server.
+    * */
     @Autowired
     MockMvc mockMvc;
 
