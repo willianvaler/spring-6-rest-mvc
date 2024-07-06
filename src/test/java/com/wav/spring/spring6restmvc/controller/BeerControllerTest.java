@@ -14,8 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.swing.text.html.Option;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,7 +71,7 @@ class BeerControllerTest
     @Test
     void getBeerByIDNotFound() throws Exception
     {
-        given( beerService.getBeerById( any( UUID.class) ) ).willThrow( NotFoundException.class );
+        given( beerService.getBeerById( any( UUID.class) ) ).willReturn( Optional.empty() );
 
         mockMvc.perform( get( BeerController.BEER_PATH_ID, UUID.randomUUID( )) )
                     .andExpect( status().isNotFound() );
@@ -171,7 +173,7 @@ class BeerControllerTest
     {
         Beer beer = beerServiceImpl.listBeers().get( 0 );
         //configura o mockito para retornar um objeto existente
-        given(beerService.getBeerById( beer.getId() )).willReturn( beer );
+        given(beerService.getBeerById( beer.getId() )).willReturn( Optional.of( beer ) );
 
         mockMvc.perform( get(BeerController.BEER_PATH_ID, beer.getId() )
                             .accept( MediaType.APPLICATION_JSON ) )
