@@ -1,5 +1,6 @@
 package com.wav.spring.spring6restmvc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wav.spring.spring6restmvc.model.Beer;
 import com.wav.spring.spring6restmvc.service.BeerService;
 import com.wav.spring.spring6restmvc.service.BeerServiceImpl;
@@ -32,10 +33,25 @@ class BeerControllerTest
     @Autowired
     MockMvc mockMvc;
 
+    //creating json using jackson
+    @Autowired
+    ObjectMapper objectMapper;
+
     @MockBean
     BeerService beerService;
 
     BeerServiceImpl beerServiceImpl = new BeerServiceImpl();
+
+    @Test
+    void testCreateNewBeer() throws Exception
+    {
+        //when autowired, its no necessary to locate modules
+//        objectMapper.findAndRegisterModules();
+
+        Beer beer = beerServiceImpl.listBeers().get( 0 );
+
+        System.out.println( objectMapper.writeValueAsString(beer) );
+    }
 
     @Test
     void testListBeers() throws Exception
@@ -52,7 +68,7 @@ class BeerControllerTest
     void getBeerById() throws Exception
     {
         Beer beer = beerServiceImpl.listBeers().get( 0 );
-        //configura o mackito para retornar um objeto existente
+        //configura o mockito para retornar um objeto existente
         given(beerService.getBeerById( beer.getId() )).willReturn( beer );
 
         mockMvc.perform( get("/api/v1/beer/" + beer.getId() )
