@@ -2,6 +2,7 @@ package com.wav.spring.spring6restmvc.controller;
 
 import com.wav.spring.spring6restmvc.service.BeerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.wav.spring.spring6restmvc.model.Beer;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +25,7 @@ import java.util.UUID;
  * Created by jt, Spring Framework Guru.
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/beer")
 public class BeerController
