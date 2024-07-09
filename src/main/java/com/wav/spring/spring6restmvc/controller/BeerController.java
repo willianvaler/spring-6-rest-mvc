@@ -1,15 +1,13 @@
 package com.wav.spring.spring6restmvc.controller;
 
 import com.wav.spring.spring6restmvc.service.BeerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.wav.spring.spring6restmvc.model.Beer;
+import com.wav.spring.spring6restmvc.model.BeerDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -38,7 +35,7 @@ public class BeerController
     private final BeerService beerService;
 
     @PatchMapping(BEER_PATH_ID)
-    public ResponseEntity updateBeerPatchById( @PathVariable("beerId") UUID beerId, @RequestBody Beer beer )
+    public ResponseEntity updateBeerPatchById( @PathVariable("beerId") UUID beerId, @RequestBody BeerDTO beer )
     {
         beerService.patchBeerById( beerId, beer );
         return new ResponseEntity( HttpStatus.NO_CONTENT );
@@ -53,7 +50,7 @@ public class BeerController
     }
 
     @PutMapping(BEER_PATH_ID)
-    public ResponseEntity updateById( @PathVariable("beerId") UUID beerId, @RequestBody Beer beer )
+    public ResponseEntity updateById( @PathVariable("beerId") UUID beerId, @RequestBody BeerDTO beer )
     {
         beerService.updateById( beerId, beer );
 
@@ -61,9 +58,9 @@ public class BeerController
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody Beer beer)
+    public ResponseEntity handlePost(@RequestBody BeerDTO beer)
     {
-        Beer saved = beerService.saveNewBeer(beer);
+        BeerDTO saved = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Location", "/api/b1/beer" + saved.getId().toString() );
@@ -72,12 +69,12 @@ public class BeerController
     }
 
     @GetMapping(value = BEER_PATH)
-    public List<Beer> listBeers(){
+    public List<BeerDTO> listBeers(){
         return beerService.listBeers();
     }
 
     @GetMapping(value = BEER_PATH_ID)
-    public Beer getBeerById(@PathVariable("beerId") UUID beerId)
+    public BeerDTO getBeerById( @PathVariable("beerId") UUID beerId)
     {
 
         log.debug("Get Beer by Id - in controller");
