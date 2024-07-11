@@ -93,15 +93,26 @@ public class BeerServiceImpl implements BeerService
     }
 
     @Override
-    public void updateById( UUID beerId, BeerDTO beer )
+    public Optional<BeerDTO> updateById( UUID beerId, BeerDTO beer )
     {
+        BeerDTO existing = beers.get( beerId );
+        existing.setBeerName( beer.getBeerName() );
+        existing.setBeerStyle( beer.getBeerStyle() );
+        existing.setQuantityOnHand( beer.getQuantityOnHand() );
+        existing.setUpc( beer.getUpc() );
+        existing.setPrice( beer.getPrice() );
+        existing.setQuantityOnHand( beer.getQuantityOnHand() );
         beers.put( beerId, beer );
+
+        return Optional.of( existing );
     }
 
     @Override
-    public void deleteById( UUID beerId )
+    public Boolean deleteById( UUID beerId )
     {
         beers.remove( beerId );
+
+        return true;
     }
 
     @Override
